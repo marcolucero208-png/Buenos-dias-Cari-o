@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Para ti, al despertar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#0B0F2E;
+    --plum:#3A1F4D;
+    --coral:#E8745C;
+    --gold:#F2A65A;
+    --cream:#FFF4E3;
+    --ink:#2B1B12;
+    --ink-soft:#6B4F3D;
+    --petal:#F7C8B5;
+    --leaf:#7A8B5C;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Manrope',sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2{font-family:'Fraunces',serif;font-weight:600;margin:0;}
+  p{margin:0;}
+  button{font-family:inherit;border:none;background:none;cursor:pointer;}
+
+  :focus-visible{outline:3px solid var(--gold);outline-offset:4px;border-radius:4px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    background:linear-gradient(to bottom, var(--night) 0%, var(--plum) 100%);
+    color:var(--cream);
+    transition:background 3s ease, color 1.5s ease;
+    padding:2rem 1.5rem;
+  }
+  .hero.is-awake{
+    background:linear-gradient(to bottom, var(--plum) 0%, var(--coral) 55%, var(--gold) 100%);
+    color:var(--ink);
+  }
+
+  .stars{position:absolute;inset:0;pointer-events:none;}
+  .star{
+    position:absolute;
+    width:3px;height:3px;
+    background:var(--cream);
+    border-radius:50%;
+    opacity:.8;
+    animation:twinkle 3s ease-in-out infinite;
+  }
+  @keyframes twinkle{0%,100%{opacity:.2;}50%{opacity:1;}}
+  .hero.is-awake .stars{opacity:0;transition:opacity 1.8s ease;}
+
+  .sun{
+    position:absolute;
+    bottom:-30%;
+    left:50%;
+    transform:translateX(-50%);
+    width:240px;height:240px;
+    border-radius:50%;
+    background:radial-gradient(circle, var(--gold), var(--coral));
+    opacity:0;
+    filter:blur(1px);
+    transition:bottom 3.2s cubic-bezier(.22,1,.36,1), opacity 2s ease, box-shadow 2s ease;
+  }
+  .hero.is-awake .sun{
+    bottom:8%;
+    opacity:1;
+    box-shadow:0 0 140px 50px rgba(242,166,90,.5);
+  }
+
+  .hero-inner{position:relative;z-index:2;max-width:540px;}
+
+  .eyebrow{
+    font-size:.95rem;
+    letter-spacing:.04em;
+    opacity:.85;
+    margin-bottom:1.6rem;
+  }
+
+  .wake-btn{
+    font-size:1.05rem;
+    font-weight:600;
+    color:var(--night);
+    background:var(--cream);
+    padding:.9rem 1.8rem;
+    border-radius:999px;
+    display:inline-flex;
+    align-items:center;
+    gap:.6rem;
+    box-shadow:0 0 0 0 rgba(247,200,181,.6);
+    animation:pulse 2.4s ease-in-out infinite;
+    transition:transform .2s ease, opacity .6s ease, visibility .6s ease;
+  }
+  .wake-btn:hover{transform:translateY(-2px);}
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(255,244,227,.45);}
+    70%{box-shadow:0 0 0 18px rgba(255,244,227,0);}
+    100%{box-shadow:0 0 0 0 rgba(255,244,227,0);}
+  }
+
+  .pre-wake, .post-wake{transition:opacity .6s ease;}
+  .pre-wake.hide{opacity:0;visibility:hidden;position:absolute;inset:0;}
+  .post-wake{opacity:0;}
+  .post-wake.show{opacity:1;}
+
+  .greeting{font-size:clamp(2rem,7vw,3rem);line-height:1.15;}
+  .greeting em{font-style:italic;font-weight:500;}
+
+  .time-label{
+    margin-top:1.8rem;
+    font-size:.85rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.75;
+  }
+  .time-together{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(1.6rem,5vw,2.3rem);
+    margin-top:.3rem;
+  }
+  .ticking{
+    margin-top:1rem;
+    font-size:.9rem;
+    opacity:.8;
+    font-variant-numeric:tabular-nums;
+  }
+  .scroll-hint{margin-top:3rem;font-size:.85rem;opacity:.6;}
+
+  /* ---------- GARDEN ---------- */
+  .garden, .big-bloom-section, .closing{
+    padding:5rem 1.5rem;
+    text-align:center;
+  }
+  .garden h2, .big-bloom-section h2{
+    font-size:clamp(1.5rem,4.5vw,2rem);
+    max-width:480px;
+    margin:0 auto;
+  }
+  .hint{margin-top:.6rem;font-size:.85rem;color:var(--ink-soft);}
+
+  .flower-row{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:2.4rem;
+    max-width:680px;
+    margin:3.2rem auto 0;
+  }
+  .flower-item{width:140px;}
+
+  .flower{
+    position:relative;
+    width:72px;height:72px;
+    margin:0 auto;
+  }
+  .flower .stem{
+    position:absolute;
+    top:100%;left:50%;
+    width:3px;height:34px;
+    background:var(--leaf);
+    transform:translateX(-50%);
+    border-radius:2px;
+  }
+  .flower .bud{
+    position:absolute;inset:0;
+    border-radius:50%;
+    background:radial-gradient(circle, var(--petal), var(--coral));
+    transform:scale(.42);
+    transition:opacity .4s ease;
+  }
+  .flower.big .bud{transform:scale(.32);}
+  .flower-item.bloomed .bud, .big-flower.bloomed .bud{opacity:0;}
+
+  .flower .petal{
+    position:absolute;
+    width:30px;height:46px;
+    top:50%;left:50%;
+    background:linear-gradient(var(--petal), var(--coral));
+    border-radius:50% 50% 50% 50% / 62% 62% 38% 38%;
+    transform-origin:bottom center;
+    transform:translate(-50%,-100%) rotate(var(--rot)) scale(0);
+    transition:transform .55s var(--delay,0s) cubic-bezier(.34,1.56,.64,1);
+  }
+  .flower.big .petal{width:40px;height:62px;}
+  .flower-item.bloomed .petal, .big-flower.bloomed .petal{
+    transform:translate(-50%,-100%) rotate(var(--rot)) scale(1);
+  }
+  .flower .pistil{
+    position:absolute;
+    width:14px;height:14px;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    background:var(--gold);
+    border-radius:50%;
+    transition:transform .4s ease .35s;
+  }
+  .flower.big .pistil{width:20px;height:20px;}
+  .flower-item.bloomed .pistil, .big-flower.bloomed .pistil{transform:translate(-50%,-50%) scale(1);}
+
+  .petal-message{
+    margin-top:1.4rem;
+    font-size:.92rem;
+    color:var(--ink-soft);
+    max-height:0;
+    opacity:0;
+    overflow:hidden;
+    transition:max-height .5s ease, opacity .5s ease;
+  }
+  .flower-item.bloomed .petal-message{max-height:140px;opacity:1;}
+
+  /* ---------- BIG BLOOM / FINAL MESSAGE ---------- */
+  .big-bloom-section{background:linear-gradient(180deg, var(--cream), #FFE9CE);}
+  .big-flower{width:120px;height:120px;margin:2.6rem auto 0;cursor:pointer;}
+
+  .final-message{
+    max-width:480px;
+    margin:0 auto;
+    max-height:0;
+    opacity:0;
+    overflow:hidden;
+    transition:max-height .8s ease, opacity .8s ease;
+  }
+  .big-flower-wrap.bloomed .final-message{max-height:600px;opacity:1;margin-top:2.2rem;}
+
+  .final-message p{
+    font-family:'Fraunces',serif;
+    font-size:clamp(1.05rem,2.6vw,1.25rem);
+    line-height:1.6;
+    color:var(--ink);
+  }
+  .signature{
+    margin-top:1.4rem;
+    font-family:'Caveat',cursive;
+    font-size:1.6rem;
+    color:var(--coral);
+  }
+
+  /* ---------- CLOSING ---------- */
+  .closing{padding-bottom:7rem;}
+  .hug-btn{
+    font-size:1rem;
+    font-weight:600;
+    color:var(--cream);
+    background:var(--coral);
+    padding:.9rem 2rem;
+    border-radius:999px;
+    transition:transform .2s ease, background .3s ease;
+  }
+  .hug-btn:hover{transform:translateY(-2px);background:var(--gold);}
+  .closing-note{
+    margin-top:1.6rem;
+    font-size:1rem;
+    color:var(--ink-soft);
+    opacity:0;
+    transition:opacity .8s ease;
+  }
+  .closing-note.show{opacity:1;}
+
+  .falling-petal{
+    position:fixed;
+    top:-24px;
+    width:12px;height:18px;
+    border-radius:50% 50% 50% 50% / 62% 62% 38% 38%;
+    z-index:80;
+    pointer-events:none;
+    animation:fall var(--dur) linear forwards;
+  }
+  @keyframes fall{
+    to{transform:translateY(112vh) rotate(var(--rot));opacity:0;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.2s !important;}
+  }
+</style>
+</head>
+<body>
+
+<section class="hero" id="hero">
+  <div class="stars" id="stars"></div>
+  <div class="sun" aria-hidden="true"></div>
+
+  <div class="hero-inner">
+    <div class="pre-wake" id="pre-wake">
+      <p class="eyebrow">para ti, antes de abrir los ojos del todo</p>
+      <button class="wake-btn" id="wake-btn">Toca para despertar el día ☼</button>
+    </div>
+
+    <div class="post-wake" id="post-wake">
+      <h1 class="greeting">Buenos días, <em id="pareja-nombre">mi amor</em></h1>
+      <p class="time-label">llevamos contando</p>
+      <p class="time-together" id="time-together">—</p>
+      <p class="ticking">y sumando segundos juntos: <span id="seconds-count">—</span></p>
+      <p class="scroll-hint">desliza hacia abajo ↓</p>
+    </div>
+  </div>
+</section>
+
+<section class="garden">
+  <h2>Lo que florece cuando estoy contigo</h2>
+  <p class="hint">toca cada flor</p>
+
+  <div class="flower-row">
+    <div class="flower-item">
+      <div class="flower" data-petals="6"></div>
+      <p class="petal-message">Contigo hasta las tardes comunes se sienten especiales.</p>
+    </div>
+    <div class="flower-item">
+      <div class="flower" data-petals="6"></div>
+      <p class="petal-message">Me gusta cómo construimos esto, despacio y a propósito.</p>
+    </div>
+    <div class="flower-item">
+      <div class="flower" data-petals="6"></div>
+      <p class="petal-message">Sigues siendo con quien más quiero compartir mis días, buenos y complicados.</p>
+    </div>
+    <div class="flower-item">
+      <div class="flower" data-petals="6"></div>
+      <p class="petal-message">Aprendo algo nuevo de ti — y de nosotros — todo el tiempo.</p>
+    </div>
+    <div class="flower-item">
+      <div class="flower" data-petals="6"></div>
+      <p class="petal-message">Elegirte sigue siendo lo más fácil que hago cada día.</p>
+    </div>
+  </div>
+</section>
+
+<section class="big-bloom-section">
+  <h2>Y la razón más grande de todas</h2>
+  <p class="hint">toca la flor</p>
+
+  <div class="big-flower-wrap" id="big-flower-wrap">
+    <div class="flower big big-flower" data-petals="8" id="big-flower"></div>
+    <div class="final-message" id="final-message">
+      <p id="mensaje-final"></p>
+      <p class="signature" id="firma"></p>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <button class="hug-btn" id="hug-btn">Mandar un abrazo</button>
+  <p class="closing-note" id="closing-note">fin… de esta sorpresa, no de nosotros 🌅</p>
+</section>
+
+<div id="petal-container" aria-hidden="true"></div>
+
+<script>
+  /* ====================================================================
+     PERSONALIZA AQUÍ — edita estas líneas con sus datos reales
+     ==================================================================== */
+  const PAREJA_NOMBRE = "mi amor";          // nombre o apodo de tu pareja
+  const TU_NOMBRE      = "";                 // tu nombre o apodo (déjalo vacío si prefieres no firmar)
+  const FECHA_INICIO   = "2025-03-29";       // AAAA-MM-DD — el día que empezaron, ajústalo al real
+  const MENSAJE_FINAL  = "No quería darte solo palabras en una página. Quería darte algo que se sintiera tan vivo como lo que siento cuando despierto pensando en ti. En este tiempo juntos —con lo simple y lo difícil, lo cotidiano y lo extraordinario— he aprendido que no hay nada que prefiera construir más que esto, contigo. Que este amanecer sea solo uno de muchísimos más. Te amo, hoy como el primer día y un poco más que ayer.";
+  /* ==================================================================== */
+
+  document.getElementById('pareja-nombre').textContent = PAREJA_NOMBRE;
+  document.getElementById('mensaje-final').textContent = MENSAJE_FINAL;
+  document.getElementById('firma').textContent = TU_NOMBRE ? `— ${TU_NOMBRE}` : '';
+
+  // ---------- estrellas ----------
+  const starsEl = document.getElementById('stars');
+  for(let i=0;i<55;i++){
+    const s = document.createElement('div');
+    s.className='star';
+    s.style.top = Math.random()*70+'%';
+    s.style.left = Math.random()*100+'%';
+    s.style.animationDelay = (Math.random()*3)+'s';
+    starsEl.appendChild(s);
+  }
+
+  // ---------- despertar ----------
+  const hero = document.getElementById('hero');
+  const preWake = document.getElementById('pre-wake');
+  const postWake = document.getElementById('post-wake');
+  document.getElementById('wake-btn').addEventListener('click', wake);
+  function wake(){
+    hero.classList.add('is-awake');
+    preWake.classList.add('hide');
+    setTimeout(()=>postWake.classList.add('show'), 900);
+    updateCounter();
+  }
+
+  // ---------- contador de tiempo juntos ----------
+  function plural(n, s, p){ return n===1 ? s : p; }
+
+  function diffYMD(start, end){
+    let years = end.getFullYear() - start.getFullYear();
+    let months = end.getMonth() - start.getMonth();
+    let days = end.getDate() - start.getDate();
+    if(days < 0){
+      months -= 1;
+      const prevMonthLastDay = new Date(end.getFullYear(), end.getMonth(), 0).getDate();
+      days += prevMonthLastDay;
+    }
+    if(months < 0){ years -= 1; months += 12; }
+    return {years, months, days};
+  }
+
+  function formatYMD(years, months, days){
+    const parts = [];
+    if(years>0) parts.push(`${years} ${plural(years,'año','años')}`);
+    if(months>0) parts.push(`${months} ${plural(months,'mes','meses')}`);
+    if(days>0) parts.push(`${days} ${plural(days,'día','días')}`);
+    if(parts.length===0) return 'unos minutos';
+    if(parts.length===1) return parts[0];
+    if(parts.length===2) return `${parts[0]} y ${parts[1]}`;
+    return `${parts[0]}, ${parts[1]} y ${parts[2]}`;
+  }
+
+  function updateCounter(){
+    const start = new Date(FECHA_INICIO+'T00:00:00');
+    const now = new Date();
+    const totalSeconds = Math.max(0, Math.floor((now-start)/1000));
+    const {years, months, days} = diffYMD(start, now);
+    document.getElementById('time-together').textContent = formatYMD(years, months, days);
+    document.getElementById('seconds-count').textContent = totalSeconds.toLocaleString('es-ES');
+  }
+  updateCounter();
+  setInterval(updateCounter, 1000);
+
+  // ---------- flores ----------
+  function buildFlower(el){
+    const count = parseInt(el.dataset.petals || '6', 10);
+    const stem = document.createElement('div'); stem.className='stem';
+    el.appendChild(stem);
+    const bud = document.createElement('div'); bud.className='bud';
+    el.appendChild(bud);
+    for(let i=0;i<count;i++){
+      const petal = document.createElement('div');
+      petal.className='petal';
+      petal.style.setProperty('--rot', `${(360/count)*i}deg`);
+      petal.style.setProperty('--delay', `${i*0.05}s`);
+      el.appendChild(petal);
+    }
+    const pistil = document.createElement('div'); pistil.className='pistil';
+    el.appendChild(pistil);
+  }
+  document.querySelectorAll('.flower').forEach(buildFlower);
+
+  document.querySelectorAll('.flower-item').forEach(item=>{
+    const flower = item.querySelector('.flower');
+    flower.setAttribute('role','button');
+    flower.setAttribute('tabindex','0');
+    flower.setAttribute('aria-label','Tocar para abrir la flor');
+    const toggle = ()=>item.classList.toggle('bloomed');
+    flower.addEventListener('click', toggle);
+    flower.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }});
+  });
+
+  const bigWrap = document.getElementById('big-flower-wrap');
+  const bigFlower = document.getElementById('big-flower');
+  bigFlower.setAttribute('role','button');
+  bigFlower.setAttribute('tabindex','0');
+  bigFlower.setAttribute('aria-label','Tocar para abrir el mensaje completo');
+  const toggleBig = ()=>bigWrap.classList.toggle('bloomed');
+  bigFlower.addEventListener('click', toggleBig);
+  bigFlower.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleBig(); }});
+
+  // ---------- abrazo / pétalos cayendo ----------
+  const petalContainer = document.getElementById('petal-container');
+  const colors = ['var(--petal)','var(--coral)','var(--gold)'];
+  document.getElementById('hug-btn').addEventListener('click', ()=>{
+    for(let i=0;i<40;i++){
+      const p = document.createElement('div');
+      p.className='falling-petal';
+      p.style.left = (Math.random()*100)+'vw';
+      p.style.background = colors[Math.floor(Math.random()*colors.length)];
+      p.style.setProperty('--dur', (3+Math.random()*2.2)+'s');
+      p.style.setProperty('--rot', (Math.random()*360)+'deg');
+      petalContainer.appendChild(p);
+      p.addEventListener('animationend', ()=>p.remove());
+    }
+    document.getElementById('closing-note').classList.add('show');
+  });
+</script>
+
+</body>
+</html>
